@@ -118,6 +118,7 @@
             "Khomas": [-22.57, 17.08]
         };
 
+        // Marker icons
         const greenIcon = L.icon({
             iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png',
             shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
@@ -127,23 +128,31 @@
             shadowSize: [41, 41]
         });
 
-        const futureOffices = [
-            {
-                name: "Future Satellite Office",
-                coords: [-26.6486, 15.1572],
-                highlightRegion: false,
-                details: `<div style="max-height:250px;overflow-y:auto;line-height:1.4;">
-                  <p><b>Planned Office Location:</b> Luderitz</p></div>`
-            },
-            {
-                name: "Future Satellite Office",
-                coords: [-17.9167, 19.7667],
-                highlightRegion: ["Kavango East"],
-                details: `<div style="max-height:250px;overflow-y:auto;line-height:1.4;">
-                  <p><b>Planned Office Location:</b> Rundu</p></div>`
-            }
-        ];
+        // Custom red marker (#fc2203)
+        const redIcon = L.divIcon({
+            className: "",
+            html: `<svg xmlns="http://www.w3.org/2000/svg" width="30" height="50" viewBox="0 0 24 40">
+              <path fill="#fc2203" stroke="black" stroke-width="0.5"
+                d="M12 2C7.03 2 3 6.03 3 11c0 6.25 9 15 9 15s9-8.75 9-15c0-4.97-4.03-9-9-9z"/>
+              <circle cx="12" cy="11" r="3.5" fill="white"/>
+            </svg>`,
+            iconAnchor: [12, 40],
+            popupAnchor: [0, -38]
+        });
 
+        // Custom deep blue marker (#0334c4)
+        const blueCustomIcon = L.divIcon({
+            className: "",
+            html: `<svg xmlns="http://www.w3.org/2000/svg" width="30" height="50" viewBox="0 0 24 40">
+              <path fill="#0334c4" stroke="black" stroke-width="0.5"
+                d="M12 2C7.03 2 3 6.03 3 11c0 6.25 9 15 9 15s9-8.75 9-15c0-4.97-4.03-9-9-9z"/>
+              <circle cx="12" cy="11" r="3.5" fill="white"/>
+            </svg>`,
+            iconAnchor: [12, 40],
+            popupAnchor: [0, -38]
+        });
+
+        // Highlight handling
         let activeRings = [];
 
         function clearHighlights() {
@@ -157,8 +166,8 @@
                 if (regionCenters[region]) {
                     const ring = L.circle(regionCenters[region], {
                         radius: 80000,
-                        color: 'var(--text)',
-                        fillColor: 'var(--highlight)',
+                        color: '#fc2203',
+                        fillColor: '#fca399',
                         fillOpacity: 0.5,
                         weight: 2
                     }).addTo(map);
@@ -168,6 +177,15 @@
         }
 
         // Future Offices
+        const futureOffices = [
+            {
+                name: "Future Satellite Office",
+                coords: [-26.6486, 15.1572],
+                highlightRegion: false,
+                details: `<div><b>Planned Office Location:</b> Luderitz</div>`
+            }
+        ];
+
         futureOffices.forEach(f => {
             const marker = L.marker(f.coords, { icon: greenIcon }).addTo(map);
             marker.bindPopup(`<b>${f.name}</b><br>${f.details}`);
@@ -178,8 +196,8 @@
                 } else {
                     const townCircle = L.circle(f.coords, {
                         radius: 80000,
-                        color: 'var(--text)',
-                        fillColor: 'var(--highlight)',
+                        color: 'green',
+                        fillColor: '#00ff00',
                         fillOpacity: 0.5,
                         weight: 2
                     }).addTo(map);
@@ -188,6 +206,7 @@
             });
         });
 
+        // Main Branches (Red markers)
         const branches = [
             {
                 name: "Windhoek Branch",
@@ -195,21 +214,10 @@
                 regions: ["Hardap", "Karas", "Omaheke", "Otjozondjupa", "Khomas"],
                 details: `
         <div style="max-height:250px;overflow-y:auto;line-height:1.4;">
-            <p><b>Technical Manager:</b> Mr. Meyer Nel</p>
-            <p><b>Field Engineers:</b> 20<br>
-               <b>Administrators:</b> 3<br>
-               <b>Sales Consultants:</b> 7</p>
-            <b>Towns Supported</b><br><br>
-            <b>Khomas Region</b><br>
-            Windhoek, Okahandja, Rehoboth<br><br>
-            <b>Hardap Region</b><br>
-            Mariental, Gibeon, Kalkrand, Maltahöhe, Rehoboth, Stampriet, Hoachanas, Leonardville, Gochas<br><br>
-            <b>Karas Region</b><br>
-            Keetmanshoop, Lüderitz, Karasburg, Oranjemund, Bethanie, Aroab, Aus, Ariamsvlei, Noordoewer, Grunau<br><br>
-            <b>Omaheke Region</b><br>
-            Gobabis, Otjinene, Epukiro, Witvlei, Leonardville, Eiseb, Talismanis<br><br>
-            <b>Otjozondjupa Region</b><br>
-            Otjiwarongo, Okahandja, Otavi, Grootfontein, Okakarara, Hochfeld, Ovitoto, Okamatapati
+          <p><b>Technical Manager:</b> Mr. Meyer Nel</p>
+          <p><b>Field Engineers:</b> 20<br>
+          <b>Administrators:</b> 3<br>
+          <b>Sales Consultants:</b> 7</p>
         </div>`
             },
             {
@@ -218,15 +226,10 @@
                 regions: ["Erongo", "Kunene"],
                 details: `
         <div style="max-height:250px;overflow-y:auto;line-height:1.4;">
-            <p><b>Branch Manager:</b> Ms. Lucretia Fourie<br>
-            <b>Field Engineers:</b> 2<br>
-            <b>Administrative Assistants:</b> 1<br>
-            <b>Sales Consultants:</b> 1</p>
-            <b>Towns Supported</b><br><br>
-            <b>Erongo Region</b><br>
-            Swakopmund, Henties Bay, Arandis, Usakos, Karibib, Omaruru, Spitzkoppe, Uis<br><br>
-            <b>Kunene Region (Partial – up to Sesfontein)</b><br>
-            Khorixas, Kamanjab, Sesfontein
+          <p><b>Branch Manager:</b> Ms. Lucretia Fourie<br>
+          <b>Field Engineers:</b> 2<br>
+          <b>Administrative Assistants:</b> 1<br>
+          <b>Sales Consultants:</b> 1</p>
         </div>`
             },
             {
@@ -235,18 +238,62 @@
                 regions: ["Oshikoto", "Oshana", "Omusati", "Ohangwena", "Kavango West", "Kavango East"],
                 details: `
         <div style="max-height:250px;overflow-y:auto;line-height:1.4;">
-            <p><b>Branch Manager:</b> Mr. Gerhard Moolman<br>
-            <b>Field Engineers:</b> 3<br>
-            <b>Administrative Assistants:</b> 2<br>
-            <b>Sales Consultants:</b> 1</p>
+          <p><b>Branch Manager:</b> Mr. Gerhard Moolman<br>
+          <b>Field Engineers:</b> 3<br>
+          <b>Administrative Assistants:</b> 2<br>
+          <b>Sales Consultants:</b> 1</p>
         </div>`
             }
         ];
 
         branches.forEach(b => {
-            const marker = L.marker(b.coords).addTo(map);
+            const marker = L.marker(b.coords, { icon: redIcon }).addTo(map);
             marker.bindPopup(`<b>${b.name}</b><br>${b.details}`);
             marker.on('click', () => highlightRegions(b.regions));
+        });
+
+        // Support Partners (Blue #0334c4 markers)
+        const towns = [
+            { name: "Support Partner", coords: [-24.6333, 17.9667], details: `<b>Mariental</b>` },
+            { name: "Support Partner", coords: [-17.9167, 19.7667], details: `<b>Rundu</b>` },
+            { name: "Support Partner", coords: [-17.5, 24.2667], details: `<b>Katima Mulilo</b>` },
+            { name: "Support Partner", coords: [-26.5833, 18.1333], details: `<b>Keetmanshoop</b>` },
+            { name: "Support Partner", coords: [-28.5667, 16.4333], details: `<b>Oranjemund</b>` },
+            { name: "Support Partner", coords: [-20.4667, 17.0833], details: `<b>Otjiwarongo</b>` },
+            {
+                name: "Support Partner",
+                coords: [-19.2333, 17.7167],
+                supports: [{ name: "Grootfontein", coords: [-19.5667, 18.1167] }],
+                details: `<b>Tsumeb</b><br>Supports Grootfontein`
+            }
+        ];
+
+        towns.forEach(t => {
+            const marker = L.marker(t.coords, { icon: blueCustomIcon }).addTo(map);
+            marker.bindPopup(`<b>${t.name}</b><br>${t.details}`);
+            marker.on('click', () => {
+                clearHighlights();
+                const townCircle = L.circle(t.coords, {
+                    radius: 40000,
+                    color: '#0334c4',
+                    fillColor: '#0334c4',
+                    fillOpacity: 0.3,
+                    weight: 2
+                }).addTo(map);
+                activeRings.push(townCircle);
+                if (t.supports) {
+                    t.supports.forEach(s => {
+                        const c = L.circle(s.coords, {
+                            radius: 20000,
+                            color: '#0334c4',
+                            fillColor: '#0334c4',
+                            fillOpacity: 0.3,
+                            weight: 2
+                        }).addTo(map);
+                        activeRings.push(c);
+                    });
+                }
+            });
         });
 
         // Dark Mode Toggle
@@ -266,58 +313,6 @@
             }
             darkMode = !darkMode;
         };
-
-        const blueIcon = L.icon({
-            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png',
-            shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
-            iconSize: [25, 41],
-            iconAnchor: [12, 41],
-            popupAnchor: [1, -34],
-            shadowSize: [41, 41]
-        });
-
-        const towns = [
-            { name: "Support Partner", coords: [-24.6333, 17.9667], details: `<b>Mariental</b>` },
-            { name: "Support Partner", coords: [-17.9167, 19.7667], details: `<b>Rundu</b>` },
-            { name: "Support Partner", coords: [-17.5, 24.2667], details: `<b>Katima Mulilo</b>` },
-            { name: "Support Partner", coords: [-26.5833, 18.1333], details: `<b>Keetmanshoop</b>` },
-            { name: "Support Partner", coords: [-28.5667, 16.4333], details: `<b>Oranjemund</b>` },
-            { name: "Support Partner", coords: [-20.4667, 17.0833], details: `<b>Otjiwarongo</b>` },
-            {
-                name: "Support Partner",
-                coords: [-19.2333, 17.7167],
-                supports: [{ name: "Grootfontein", coords: [-19.5667, 18.1167] }],
-                details: `<b>Tsumeb</b><br>Supports Grootfontein`
-            }
-        ];
-
-        towns.forEach(t => {
-            const marker = L.marker(t.coords, { icon: blueIcon }).addTo(map);
-            marker.bindPopup(`<b>${t.name}</b><br>${t.details}`);
-            marker.on('click', () => {
-                clearHighlights();
-                const townCircle = L.circle(t.coords, {
-                    radius: 40000,
-                    color: 'blue',
-                    fillColor: 'blue',
-                    fillOpacity: 0.3,
-                    weight: 2
-                }).addTo(map);
-                activeRings.push(townCircle);
-                if (t.supports) {
-                    t.supports.forEach(s => {
-                        const c = L.circle(s.coords, {
-                            radius: 20000,
-                            color: 'blue',
-                            fillColor: 'blue',
-                            fillOpacity: 0.3,
-                            weight: 2
-                        }).addTo(map);
-                        activeRings.push(c);
-                    });
-                }
-            });
-        });
     </script>
 </body>
 
